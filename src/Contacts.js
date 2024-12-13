@@ -40,6 +40,7 @@ const styles = {
         gap: '20px',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        paddingLeft: '10px',
     },
     addressText: {
         color: '#372821',

@@ -1,9 +1,9 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom';
 import {Box, Typography} from "@mui/material";
 
 import Items from './Items.js'
-import {gelVarnishes, categories} from './constants/products'
+import {categories} from './constants/products'
 
 const styles = {
     container: {
@@ -27,18 +27,38 @@ const Products = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const title = categories[id].title
-    const items = id === 'gelVarnishes' ? gelVarnishes : {};
+    const [products, setProducts] = useState([]);
+    const [title, setTitle] = useState('');
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const responseProduct = await fetch(`http://localhost:8000/api/${id}`);
+                const responseCategories = await fetch('http://localhost:8000/api/categories');
+                if (!responseProduct.ok || !responseCategories.ok) {
+                    throw new Error('Ошибка при загрузке продуктов и категорий');
+                }
+                const dataProduct = await responseProduct.json();
+                const dataCategories = await responseCategories.json();
+                setProducts(dataProduct);
+                setTitle(...dataCategories[id].title);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     return (
         <Box sx={styles.container}>
-            <Typography sx={styles.title}>{title}</Typography>
+            <Typography sx={styles.title}>{categories[id].title}</Typography>
             <Box sx={styles.itemsContainer}>
-                {Object.entries(items).map(([key, item]) => (
+                {products.map((item) => (
                     <Items
                         key={item.title}
                         item={item}
-                        id={key}
                     />
                 ))}
             </Box>

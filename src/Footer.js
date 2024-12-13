@@ -1,7 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Box, Typography, Link} from '@mui/material';
 import {Instagram, Twitter, Facebook} from '@mui/icons-material';
+
+import {useIsAuth} from "./containers/authorization";
 
 const styles = {
     footerContainer: {
@@ -68,13 +70,18 @@ const styles = {
 
 const Footer = () => {
     const navigate = useNavigate();
+    const isAuth = useIsAuth()
 
     const onContactsClick = () => {
-        navigate('/contacts');
+        if (isAuth) {
+            navigate('/contacts');
+        }
     }
 
     const onCartClick = () => {
-        navigate('/cart');
+        if (isAuth) {
+            navigate('/cart');
+        }
     }
 
     return (
@@ -99,7 +106,7 @@ const Footer = () => {
                 <Box>
                     <Typography sx={styles.contactText}>Наши контакты</Typography>
                     <Box sx={styles.contacts}>
-                        <Typography sx={styles.text}>+375 33 394 29 29</Typography>
+                        <Typography sx={styles.text}>+375333942929</Typography>
                         <Typography sx={styles.text}>
                             Беларусь, г. Полоцк, пл. Франциска Скорины, 31
                         </Typography>
