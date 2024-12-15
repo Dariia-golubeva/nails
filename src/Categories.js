@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Typography} from "@mui/material";
 
 import ProductCard from './ProductCard';
-import {categories} from './constants/products'
 
 const styles = {
     categoriesContainer: {
@@ -63,6 +62,26 @@ const styles = {
 }
 
 const Categories = () => {
+    const [categories, setCategories] = useState({});
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/categories');
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке категорий');
+                }
+                const data = await response.json();
+                setCategories(...data);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     return (
         <Box sx={styles.categoriesContainer}>
             <Box sx={styles.titleContainer}>

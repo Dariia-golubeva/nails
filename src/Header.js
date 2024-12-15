@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, InputBase, Box, IconButton, Link } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import {useNavigate} from 'react-router-dom';
+import {AppBar, Toolbar, Typography, Box, IconButton, Link} from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
+import {useIsAuth, useAuthorizationActions} from "./containers/authorization";
 
 const styles = {
     header: {
@@ -13,7 +13,7 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    searchContainer: {
+    signOutContainer: {
         position: 'relative',
         borderRadius: '4px',
         backgroundColor: 'white',
@@ -22,19 +22,9 @@ const styles = {
         width: '100%',
         maxWidth: '300px',
     },
-    searchIconWrapper: {
-        padding: '0 16px',
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputBase: {
-        paddingLeft: 'calc(1em + 32px)',
-        borderBottom: '2px solid #E0E0E0',
-        width: '100%',
+    signOut: {
+        color: '#373737',
+        cursor: 'pointer',
     },
     phoneNumber: {
         display: 'flex',
@@ -60,25 +50,31 @@ const styles = {
 
 const Header = () => {
     const navigate = useNavigate();
+    const isAuth = useIsAuth()
+    const {addUser, setSignIn} = useAuthorizationActions();
 
-    const onClick = () => {
-        navigate('/Categories');
-    };
+    const handleSignOut = () => {
+        navigate('/');
+        if (isAuth) {
+            setSignIn(false);
+            addUser({
+                name: '',
+                surname: '',
+                email: '',
+                password: '',
+            });
+        }
+    }
 
     return (
-        <AppBar position='static' sx={styles.header} >
+        <AppBar position='static' sx={styles.header}>
             <Toolbar sx={styles.headerContent}>
-                <Box sx={styles.searchContainer}>
-                    <Box sx={styles.searchIconWrapper}>
-                        <SearchIcon color='action'/>
-                    </Box>
-                    <InputBase
-                        placeholder="Поиск..."
-                        inputProps={{ 'aria-label': 'search' }}
-                        sx={styles.inputBase}
-                    />
+                <Box sx={styles.signOutContainer}>
+                    <Typography sx={[styles.signOut, !isAuth && {display: 'none'}]} onClick={handleSignOut}>
+                        Выйти
+                    </Typography>
                 </Box>
-                <IconButton onClick={onClick} disableRipple>
+                <IconButton disableRipple>
                     <img src="/logo.png" alt="logo" width='70px'/>
                 </IconButton>
                 <Box className="phone-number" sx={styles.phoneNumber}>
@@ -88,19 +84,21 @@ const Header = () => {
                     </Typography>
                 </Box>
             </Toolbar>
-            <Toolbar component="nav" variant="dense" sx={styles.navigation}>
-                <Box sx={styles.navLinks}>
-                    <Link href="/categories" color="inherit" variant="button" sx={styles.navLink}>
-                        Категории
-                    </Link>
-                    <Link href="/contacts" color="inherit" variant="button" sx={styles.navLink}>
-                        Контакты
-                    </Link>
-                    <Link href="/cart" color="inherit" variant="button" sx={styles.navLink}>
-                        Корзина
-                    </Link>
-                </Box>
-            </Toolbar>
+            {isAuth &&
+                <Toolbar component="nav" variant="dense" sx={styles.navigation}>
+                    <Box sx={styles.navLinks}>
+                        <Link href="/categories" color="inherit" variant="button" sx={styles.navLink}>
+                            Категории
+                        </Link>
+                        <Link href="/contacts" color="inherit" variant="button" sx={styles.navLink}>
+                            Контакты
+                        </Link>
+                        <Link href="/cart" color="inherit" variant="button" sx={styles.navLink}>
+                            Корзина
+                        </Link>
+                    </Box>
+                </Toolbar>
+            }
         </AppBar>
     );
 };
