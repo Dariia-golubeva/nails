@@ -9,7 +9,10 @@ const styles = {
         padding: '40px 150px',
         backgroundColor: '#fff',
     },
-    imageContainer: {},
+    imageContainer: {
+            width: '400px',
+            height: '400px',
+    },
     infoContainer: {
         display: 'flex',
         gap: '140px',

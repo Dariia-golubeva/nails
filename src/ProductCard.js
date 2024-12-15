@@ -15,7 +15,7 @@ const styles = {
         padding: '10px',
     },
     image: {
-        marginLeft: 'auto',
+        marginLeft: 'auto'
     }
 }
 

@@ -24,6 +24,10 @@ const styles = {
     cart: {
         marginTop: '30px'
     },
+    image: {
+        width: '250px',
+        height: '250px'
+    }
 }
 
 const Items = ({item, title}) => {
@@ -35,7 +39,7 @@ const Items = ({item, title}) => {
 
     return (
         <Box sx={styles.container} onClick={handleClick}>
-            <Box>
+            <Box sx={styles.image}>
                 <img src={item.image} alt={item.text} style={{width: '100%', height: '100%'}}/>
             </Box>
             <Box sx={styles.textContainer}>
