@@ -41,8 +41,9 @@ const Products = () => {
                 }
                 const dataProduct = await responseProduct.json();
                 const dataCategories = await responseCategories.json();
+                const categorise = dataCategories[0];
                 setProducts(dataProduct);
-                setTitle(...dataCategories[id].title);
+                setTitle(categorise[id].title);
             } catch (error) {
                 setError(error.message);
             }
@@ -53,12 +54,13 @@ const Products = () => {
 
     return (
         <Box sx={styles.container}>
-            <Typography sx={styles.title}>{categories[id].title}</Typography>
+            <Typography sx={styles.title}>{title}</Typography>
             <Box sx={styles.itemsContainer}>
                 {products.map((item) => (
                     <Items
                         key={item.title}
                         item={item}
+                        title={title}
                     />
                 ))}
             </Box>

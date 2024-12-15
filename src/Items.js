@@ -26,11 +26,11 @@ const styles = {
     },
 }
 
-const Items = ({item}) => {
+const Items = ({item, title}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/Item', {state: {item}})
+        navigate('/Item', {state: {item, title}})
     }
 
     return (
