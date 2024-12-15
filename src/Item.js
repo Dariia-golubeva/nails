@@ -45,7 +45,7 @@ const styles = {
 
 const Item = () => {
     const location = useLocation();
-    const {item} = location.state;
+    const {item, title} = location.state;
 
     return (
         <Box sx={styles.container}>
@@ -55,7 +55,7 @@ const Item = () => {
                 <img src={item.image} alt={item.title} style={{width: '100%', height: '100%'}}/>
             </Box>
             <Box sx={styles.valuesContainer}>
-                <Typography sx={styles.title}>{`Гель-лак ${item.title}`}</Typography>
+                <Typography sx={styles.title}>{`${title}: ${item.title}`}</Typography>
                 <Typography sx={styles.details}><b>Объем:</b> {item.volume}</Typography>
                 <Typography sx={styles.details}><b>Срок годности:</b> {item.expiryDate}</Typography>
                 <Typography sx={styles.details}><b>Состав:</b> {item.compound}</Typography>
